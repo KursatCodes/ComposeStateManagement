@@ -18,10 +18,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -78,11 +83,25 @@ fun MyText(myText: String,color: Color){
         )
         Spacer(modifier = Modifier.padding(5.dp))
 }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTextField(){
+    var myString = remember {
+        mutableStateOf("Jet Compose")
+    }
+    //var myString :String= "Jetpack Compose"
+    TextField(value = myString.value, onValueChange = {
+        myString.value=it
+    })
+}
 @Composable
 fun Imagem(){
     Image(bitmap = ImageBitmap.imageResource(id = R.drawable.mhmd),
         contentDescription = "Hazreti Muhammed Sallalahu Aleyhi ve Sellem",
-        modifier = Modifier.background(color = Color.Black).fillMaxSize())
+        modifier = Modifier
+            .background(color = Color.Black)
+            //.fillMaxSize()
+            .size(100.dp))
     Spacer(modifier = Modifier.padding(5.dp))
 }
 @Composable
@@ -95,6 +114,7 @@ fun MainScreen(){
             MyText(myText = "aleyküm",Color.Red)
             MyButton()
             Imagem()
+            MyTextField()
 
         }
     }
