@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -36,6 +37,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -46,82 +48,41 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            Main()
         }
     }
 }
 @Composable
-fun MyButton(){
-    Button(onClick = {
-        println("Buttona tıklandı Selam")
-    }, colors = ButtonDefaults.buttonColors(Color.Green),
-
-
-    ) {
-        Text(text = "Button", fontSize = 25.sp, color = Color.Black)
-    }
-    Spacer(modifier = Modifier.padding(5.dp))
-}
-
-@Composable
-fun MyText(myText: String,color: Color){
-        Text(text = myText,
-            modifier = Modifier
-                .background(color = color, shape = MaterialTheme.shapes.large)
-                .clickable {
-                    if (myText.equals("Selam")) {
-                        println("Selam Sana")
-                    } else {
-                        println("aleykum Sana")
-                    }
-
-                }
-                .padding(10.dp),
-            color = Color.Black,
+fun Main(){
+    Column (modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally){
+        var myString = remember {
+            mutableStateOf("")
+        }
+        Text(text = "Selam", modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color.Green),
             fontSize = 25.sp,
-            fontStyle = null
-        )
-        Spacer(modifier = Modifier.padding(5.dp))
+            textAlign = TextAlign.Center)
+        Spacer(modifier = Modifier.padding(7.dp))
+        Button(onClick = { /*TODO*/ }) {
+            Text(text = "Button Test", fontSize = 25.sp)
+        }
+        Spacer(modifier = Modifier.padding(7.dp))
+        SpecialText(string = myString.value, function = {
+            myString.value=it
+        })
+    }
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTextField(){
-    var myString = remember {
-        mutableStateOf("Jet Compose")
-    }
-    //var myString :String= "Jetpack Compose"
-    TextField(value = myString.value, onValueChange = {
-        myString.value=it
-    })
-}
-@Composable
-fun Imagem(){
-    Image(bitmap = ImageBitmap.imageResource(id = R.drawable.mhmd),
-        contentDescription = "Hazreti Muhammed Sallalahu Aleyhi ve Sellem",
-        modifier = Modifier
-            .background(color = Color.Black)
-            //.fillMaxSize()
-            .size(100.dp))
-    Spacer(modifier = Modifier.padding(5.dp))
-}
-@Composable
-fun MainScreen(){
-    Surface(color = Color.LightGray) {
-        Column(modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally) {
-            MyText(myText = "Selam",Color.Blue)
-            MyText(myText = "aleyküm",Color.Red)
-            MyButton()
-            Imagem()
-            MyTextField()
-
-        }
-    }
+fun SpecialText(string: String,function:(String) -> Unit){
+    TextField(value = string, onValueChange = function, modifier = Modifier.padding(5.dp))
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MainScreen()
+    Main()
 }
